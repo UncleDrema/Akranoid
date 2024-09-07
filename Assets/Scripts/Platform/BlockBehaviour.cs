@@ -25,7 +25,6 @@ namespace Game.Platform
         {
             if (other.gameObject.TryGetComponent(out BallBehaviour ball))
             {
-                Debug.Log($"Bounce!");
                 Damage();
             }
         }

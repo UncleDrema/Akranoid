@@ -18,21 +18,45 @@ namespace Game.Platform
         [SerializeField]
         private Rigidbody2D rb;
         
-        private bool _isLaunched;
+        public bool IsLaunched { get; private set; }
 
         private void Awake()
         {
             rb.isKinematic = true;
         }
 
-        public void Launch()
+        public void Launch(RacketBehaviour fromRacket = null)
         {
-            if (_isLaunched)
+            if (IsLaunched)
                 return;
 
             rb.isKinematic = false;
-            _isLaunched = true;
-            LaunchWithAngle(Random.value * Mathf.PI);
+            IsLaunched = true;
+
+            float angle;
+            if (fromRacket != null)
+            {
+                var directionFromRacket = transform.position - fromRacket.transform.position;
+                directionFromRacket.Normalize();
+                angle = Mathf.Atan2(directionFromRacket.y, directionFromRacket.x);
+            }
+            else
+            {
+                const float delta = Mathf.PI / 8;
+                const float angleWidth = Mathf.PI - 2 * delta;
+                angle = delta + Random.value * angleWidth;
+            }
+            LaunchWithAngle(angle);
+        }
+
+        public void StopBall()
+        {
+            if (!IsLaunched)
+                return;
+
+            rb.isKinematic = true;
+            IsLaunched = false;
+            rb.velocity = Vector2.zero;
         }
 
         private void Update()
@@ -53,10 +77,17 @@ namespace Game.Platform
             float ballAngle;
             if (collision.gameObject.TryGetComponent(out RacketBehaviour racket))
             {
-                Debug.Log($"Racket!");
-                var directionFromRacket = transform.position - racket.transform.position;
-                directionFromRacket.Normalize();
-                ballAngle = Mathf.Atan2(directionFromRacket.y, directionFromRacket.x);
+                if (racket.CoveredInGlue)
+                {
+                    racket.GlueBall(this);
+                    return;
+                }
+                else
+                {
+                    var directionFromRacket = transform.position - racket.transform.position;
+                    directionFromRacket.Normalize();
+                    ballAngle = Mathf.Atan2(directionFromRacket.y, directionFromRacket.x);
+                }
             }
             else
             {

@@ -119,6 +119,7 @@ MonoBehaviour:
   bonusPrefabs:
   - {fileID: 5734559135178024098, guid: c72afa68c08d0dd47aca11915811d93e, type: 3}
   - {fileID: 5734559135178024098, guid: 7a6360335b070b643917cf15a6fd28ef, type: 3}
+  - {fileID: 5734559135178024098, guid: 18561c59cc5a15c4fa259c5323b30ef0, type: 3}
 --- !u!1 &2551676739547912928
 GameObject:
   m_ObjectHideFlags: 0
