@@ -6,8 +6,8 @@ namespace Game.Platform
     public class RacketBehaviour : MonoBehaviour
     {
         [SerializeField]
-        private float movementArea;
-
+        private RectTransform root;
+        
         [SerializeField]
         private Camera playerCamera;
 
@@ -30,7 +30,8 @@ namespace Game.Platform
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                var ball = Instantiate(ballPrefab, ballHolder);
+                var ball = Instantiate(ballPrefab, root, true);
+                ball.transform.position = ballHolder.position;
                 ball.Launch();
             }
         }
