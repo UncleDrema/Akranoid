@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Game.Platform
 {
@@ -9,6 +8,9 @@ namespace Game.Platform
     {
         [SerializeField]
         private List<GameObject> healthStates;
+
+        [SerializeField]
+        private List<GameObject> bonusPrefabs;
 
         private int maxHealth;
         private int health;
@@ -30,7 +32,11 @@ namespace Game.Platform
 
         private void SetCurrentHealthStateActive(bool isActive)
         {
-            healthStates[maxHealth - health].SetActive(isActive);
+            var i = maxHealth - health;
+            if (i >= 0 & i < healthStates.Count)
+            {
+                healthStates[i].SetActive(isActive);
+            }
         }
 
         private void Damage()
@@ -39,12 +45,22 @@ namespace Game.Platform
             health--;
             if (health <= 0)
             {
-                Destroy(gameObject);
+                Die();
             }
             else
             {
                 SetCurrentHealthStateActive(true);
             }
+        }
+
+        private void Die()
+        {
+            if (bonusPrefabs.Count > 0)
+            {
+                var prefab = bonusPrefabs[Random.Range(0, bonusPrefabs.Count)];
+                var bonus = CanvasManager.InstantiateObject(prefab, transform.position);
+            }
+            Destroy(gameObject);
         }
     }
 }

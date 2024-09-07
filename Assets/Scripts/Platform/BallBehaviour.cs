@@ -17,9 +17,6 @@ namespace Game.Platform
 
         [SerializeField]
         private Rigidbody2D rb;
-
-        [SerializeField]
-        private float deadZoneY = -5.5f;
         
         private bool _isLaunched;
 
@@ -33,7 +30,6 @@ namespace Game.Platform
             if (_isLaunched)
                 return;
 
-            transform.localScale = Vector3.one;
             rb.isKinematic = false;
             _isLaunched = true;
             LaunchWithAngle(Random.value * Mathf.PI);
@@ -41,11 +37,6 @@ namespace Game.Platform
 
         private void Update()
         {
-            if (transform.position.y < deadZoneY)
-            {
-                Destroy(gameObject);
-            }
-
             circleCollider.radius = ballRect.rect.width / 2;
         }
         

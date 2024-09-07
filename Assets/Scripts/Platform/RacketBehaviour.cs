@@ -1,13 +1,12 @@
 ﻿using System;
+using Game.Platform.Bonuses;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Game.Platform
 {
     public class RacketBehaviour : MonoBehaviour
     {
-        [SerializeField]
-        private RectTransform root;
-        
         [SerializeField]
         private Camera playerCamera;
 
@@ -30,12 +29,28 @@ namespace Game.Platform
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                var ball = Instantiate(ballPrefab, root, true);
-                ball.transform.position = ballHolder.position;
+                var ball = CanvasManager.InstantiateObject(ballPrefab, ballHolder.position);
                 ball.Launch();
             }
         }
-        
+
+        public void DuplicateBalls()
+        {
+            foreach (var ball in FindObjectsOfType<BallBehaviour>())
+            {
+                var newBall = CanvasManager.InstantiateObject(ballPrefab, ball.transform.position);
+                newBall.Launch();
+            }
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.gameObject.TryGetComponent(out BonusBase bonus))
+            {
+                bonus.Use(this);
+            }
+        }
+
         private void MoveRacket()
         {
             var pos = Input.mousePosition;
