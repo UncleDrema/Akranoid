@@ -34,6 +34,8 @@ namespace Game.Platform
         [field: SerializeField]
         public int Health { get; private set; }
 
+        private bool gameActive = false;
+
         public void CoverWithGlue(float time)
         {
             if (!CoveredInGlue)
@@ -60,10 +62,41 @@ namespace Game.Platform
             UpdateGlue();
             UpdateGlueGraphics();
             UpdateHealth();
+            UpdateBlocks();
+        }
+
+        private void UpdateBlocks()
+        {
+            if (FindAnyObjectByType<BlockBehaviour>() is null)
+            {
+                Win();
+            }
+        }
+
+        private void ClearLevel()
+        {
+            foreach (var ball in FindObjectsOfType<BallBehaviour>().ToList())
+            {
+                ball.StopBall();
+            }
+
+            foreach (var bonus in FindObjectsOfType<BonusBase>().ToList())
+            {
+                Destroy(bonus);
+            }
+        }
+
+        private void Win()
+        {
+            ClearLevel();
+            CanvasManager.WinLevel();
         }
 
         private void UpdateHealth()
         {
+            if (!gameActive)
+                return;
+            
             if (FindAnyObjectByType<BallBehaviour>() is null)
             {
                 Damage();
@@ -78,6 +111,7 @@ namespace Game.Platform
 
         private void Damage()
         {
+            gameActive = false;
             Health--;
             if (Health <= 0)
             {
@@ -91,7 +125,8 @@ namespace Game.Platform
 
         private void Die()
         {
-            
+            ClearLevel();
+            CanvasManager.FailLevel();
         }
 
         private void UpdateGlue()
@@ -114,6 +149,7 @@ namespace Game.Platform
         {
             var ball = CanvasManager.InstantiateObject(ballPrefab, ballHolder.position);
             GlueBall(ball);
+            gameActive = true;
         }
 
         private void Start()

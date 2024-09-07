@@ -8,12 +8,28 @@ namespace Game.Platform
     {
         [SerializeField] 
         private RectTransform root;
+
+        [SerializeField]
+        private LevelUi levelUi;
+        
+        [SerializeField]
+        private FinishUi finishUi;
         
         public static CanvasManager Instance { get; private set; }
 
         private void Awake()
         {
             Instance = this;
+        }
+
+        public static void WinLevel()
+        {
+            Instance.finishUi.WinLevel();
+        }
+        
+        public static void FailLevel()
+        {
+            Instance.finishUi.FailLevel();
         }
 
         public static T InstantiateObject<T>(T prefab, Vector3 position)

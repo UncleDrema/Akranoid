@@ -1,6 +1,8 @@
 ﻿using System;
 using TMPro;
+using TriInspector;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game.Platform
 {
@@ -12,9 +14,17 @@ namespace Game.Platform
         [SerializeField]
         private TMP_Text healthText;
 
+        [SerializeField, Scene]
+        private string menuScene;
+
         private void LateUpdate()
         {
             healthText.text = $"{racket.Health} / {racket.MaxHealth}";
+        }
+
+        public void ReturnToMenu()
+        {
+            SceneManager.LoadScene(menuScene);
         }
     }
 }
