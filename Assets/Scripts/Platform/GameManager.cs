@@ -24,6 +24,9 @@ namespace Game.Platform
         [SerializeField]
         private RacketBehaviour racket;
 
+        [SerializeField]
+        private BonusSpriteRepository spriteRepository;
+
         public static RacketBehaviour Racket => Instance.racket;
         
         public static GameManager Instance { get; private set; }
@@ -75,6 +78,34 @@ namespace Game.Platform
         {
             var bonus = InstantiateObject(Instance.bonusPrefab, position);
             bonus.SetBonus(GetRandomBonus());
+        }
+
+        public static Sprite GetBonusSprite(IBonus bonus)
+        {
+            var spriteRepository = Instance.spriteRepository;
+            switch (bonus)
+            {
+                case DebugBonus debugBonus:
+                    break;
+                case DuplicateBonus duplicateBonus:
+                    return spriteRepository.DuplicateSprite;
+                case GlueBonus glueBonus:
+                    return spriteRepository.GlueSprite;
+                case HealBonus healBonus:
+                    return spriteRepository.HealSprite;
+                case ScaleDownBonus scaleDownBonus:
+                    return spriteRepository.ScaleDownSprite;
+                case ScaleUpBonus scaleUpBonus:
+                    return spriteRepository.ScaleUpSprite;
+                case SpeedDownBonus speedDownBonus:
+                    return spriteRepository.SpeedDownSprite;
+                case SpeedUpBonus speedUpBonus:
+                    return spriteRepository.SpeedUpSprite;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(bonus));
+            }
+
+            return null;
         }
 
         private static IBonus GetRandomBonus()

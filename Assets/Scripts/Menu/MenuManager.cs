@@ -1,6 +1,8 @@
-﻿using TriInspector;
+﻿using System;
+using TriInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Game.Menu
 {
@@ -8,6 +10,15 @@ namespace Game.Menu
     {
         [Scene, SerializeField]
         private string levelScene;
+
+        [SerializeField]
+        private LevelRepository levelRepository;
+
+        [SerializeField]
+        private Image previewImage;
+
+        [SerializeField]
+        private Button launchButton;
         
         public void LaunchGame()
         {
@@ -17,6 +28,29 @@ namespace Game.Menu
         public void Quit()
         {
             Application.Quit();
+        }
+
+        public void SelectLevelOne() => SelectLevel(0);
+        
+        public void SelectLevelTwo() => SelectLevel(1);
+        
+        public void SelectLevelThree() => SelectLevel(2);
+        
+        public void SelectLevelFour() => SelectLevel(3);
+
+        private void Awake()
+        {
+            levelScene = "";
+            launchButton.interactable = false;
+        }
+
+        public void SelectLevel(int i)
+        {
+            var entry = levelRepository.Levels[i];
+            var preview = entry.Preview;
+            previewImage.sprite = preview;
+            levelScene = entry.Scene;
+            launchButton.interactable = true;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Game.Platform.Bonuses
         public void SetBonus(IBonus bonus)
         {
             _bonus = bonus;
-            image.color = bonus.BonusColor;
+            image.sprite = GameManager.GetBonusSprite(bonus);
         }
         
         public void Use(RacketBehaviour racket)
