@@ -19,6 +19,12 @@ namespace Game.Menu
 
         [SerializeField]
         private Button launchButton;
+
+        [SerializeField]
+        private Sprite infoSprite;
+
+        [SerializeField]
+        private Button infoButton;
         
         public void LaunchGame()
         {
@@ -41,6 +47,13 @@ namespace Game.Menu
         private void Awake()
         {
             levelScene = "";
+            ShowInfo();
+        }
+
+        public void ShowInfo()
+        {
+            previewImage.sprite = infoSprite;
+            infoButton.interactable = false;
             launchButton.interactable = false;
         }
 
@@ -51,6 +64,7 @@ namespace Game.Menu
             previewImage.sprite = preview;
             levelScene = entry.Scene;
             launchButton.interactable = true;
+            infoButton.interactable = true;
         }
     }
 }

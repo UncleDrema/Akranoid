@@ -17,9 +17,13 @@ namespace Game.Platform
         [SerializeField, Scene]
         private string menuScene;
 
+        [SerializeField]
+        private TMP_Text blockText;
+
         private void LateUpdate()
         {
             healthText.text = $"LIVES: {racket.Health}";
+            blockText.text = $"BLOCKS LEFT: {FindObjectsOfType<BlockBehaviour>().Length}";
         }
 
         public void ReturnToMenu()

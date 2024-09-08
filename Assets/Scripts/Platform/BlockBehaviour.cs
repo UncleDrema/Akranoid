@@ -55,7 +55,9 @@ namespace Game.Platform
 
         private void Die()
         {
-            if (Random.value <= bonusChance)
+            var blockCount = FindObjectsOfType<BlockBehaviour>().Length;
+            if ((blockCount > 33 && Random.value <= bonusChance * 3) ||
+                (Random.value <= bonusChance && blockCount > 2))
             {
                 GameManager.SpawnBonus(transform.position);
             }

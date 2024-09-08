@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: LevelRepository
   m_EditorClassIdentifier: 
   Levels:
-  - Scene: Assets/Scenes/LevelScene.unity
-    Preview: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  - Scene: Assets/Scenes/LevelScene.unity
-    Preview: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  - Scene: Assets/Scenes/LevelScene.unity
-    Preview: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  - Scene: Assets/Scenes/LevelScene.unity
-    Preview: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  - Scene: Assets/Scenes/LevelOne.unity
+    Preview: {fileID: 21300000, guid: f47de3d619983e14abcc4e863e6f7f31, type: 3}
+  - Scene: Assets/Scenes/LevelTwo.unity
+    Preview: {fileID: 21300000, guid: ea4d4bb206197894c9a77618dbd04253, type: 3}
+  - Scene: Assets/Scenes/LevelThree.unity
+    Preview: {fileID: 21300000, guid: c951a2d3560cd8d4e877612f82976c71, type: 3}
+  - Scene: Assets/Scenes/LevelFour.unity
+    Preview: {fileID: 21300000, guid: b3dc682f65b310c4180499676c70dec8, type: 3}
