@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Game.Platform.Bonuses;
+using TriInspector;
 using UnityEngine;
 
 namespace Game.Platform
 {
     public class RacketBehaviour : MonoBehaviour
     {
+        [SerializeField]
+        private RectTransform racketTransform;
+        
         [SerializeField]
         private Camera playerCamera;
 
@@ -22,19 +26,83 @@ namespace Game.Platform
         [SerializeField]
         private GameObject glueOverlay;
 
+        [SerializeField]
+        private List<int> sizes = new List<int>() { 150, 300, 450};
+
+        [SerializeField]
+        private int sizeIndex = 1;
+        
+        [SerializeField]
+        private List<int> speeds = new List<int>() { 6, 9, 12};
+
+        [SerializeField]
+        private int speedIndex = 1;
+
         private List<(BallBehaviour, Vector3)> gluedBalls = new();
 
         public bool CoveredInGlue => glueTimer > 0;
 
+        public float GlueTimer => glueTimer;
+
         private float glueTimer = 0;
 
         [field: SerializeField]
-        public int MaxHealth { get; private set; } = 3;
+        public int Health { get; private set; } = 3;
         
         [field: SerializeField]
-        public int Health { get; private set; }
+        public int BallSpeed { get; private set; } = 3;
 
         private bool gameActive = false;
+
+        public bool CanScaleUp => sizeIndex < sizes.Count - 1;
+        public bool CanScaleDown => sizeIndex > 0;
+        
+        public bool CanSpeedUp => speedIndex < speeds.Count - 1;
+        public bool CanSpeedDown => speedIndex > 0;
+
+        [Button]
+        public void ScaleUp()
+        {
+            if (!CanScaleUp)
+                return;
+
+            sizeIndex++;
+            var size = racketTransform.sizeDelta;
+            size.x = sizes[sizeIndex];
+            racketTransform.sizeDelta = size;
+        }
+        
+        [Button]
+        public void ScaleDown()
+        {
+            if (!CanScaleDown)
+                return;
+
+            sizeIndex--;
+            var size = racketTransform.sizeDelta;
+            size.x = sizes[sizeIndex];
+            racketTransform.sizeDelta = size;
+        }
+        
+        [Button]
+        public void SpeedUp()
+        {
+            if (!CanSpeedUp)
+                return;
+
+            speedIndex++;
+            BallSpeed = speeds[speedIndex];
+        }
+        
+        [Button]
+        public void SpeedDown()
+        {
+            if (!CanSpeedDown)
+                return;
+
+            speedIndex--;
+            BallSpeed = speeds[speedIndex];
+        }
 
         public void CoverWithGlue(float time)
         {
@@ -80,7 +148,7 @@ namespace Game.Platform
                 ball.StopBall();
             }
 
-            foreach (var bonus in FindObjectsOfType<BonusBase>().ToList())
+            foreach (var bonus in FindObjectsOfType<BonusBehaviour>().ToList())
             {
                 Destroy(bonus);
             }
@@ -89,7 +157,7 @@ namespace Game.Platform
         private void Win()
         {
             ClearLevel();
-            CanvasManager.WinLevel();
+            GameManager.WinLevel();
         }
 
         private void UpdateHealth()
@@ -103,10 +171,9 @@ namespace Game.Platform
             }
         }
 
-        private void AddHealth()
+        public void AddHealth()
         {
-            if (Health < MaxHealth)
-                Health++;
+            Health++;
         }
 
         private void Damage()
@@ -126,7 +193,7 @@ namespace Game.Platform
         private void Die()
         {
             ClearLevel();
-            CanvasManager.FailLevel();
+            GameManager.FailLevel();
         }
 
         private void UpdateGlue()
@@ -147,15 +214,15 @@ namespace Game.Platform
 
         private void SpawnBallOnRacket()
         {
-            var ball = CanvasManager.InstantiateObject(ballPrefab, ballHolder.position);
+            var ball = GameManager.InstantiateObject(ballPrefab, ballHolder.position);
             GlueBall(ball);
             gameActive = true;
         }
 
         private void Start()
         {
+            BallSpeed = speeds[speedIndex];
             SpawnBallOnRacket();
-            Health = MaxHealth;
         }
 
         private void UpdateGluedBalls()
@@ -205,9 +272,8 @@ namespace Game.Platform
         {
             foreach (var ball in FindObjectsOfType<BallBehaviour>().ToList())
             {
-                var newBall = CanvasManager.InstantiateObject(ballPrefab, ball.transform.position);
+                var newBall = GameManager.InstantiateObject(ballPrefab, ball.transform.position);
                 
-                Debug.Log($"Duplicating ball, which is glued: {ball.IsLaunched}");
                 if (!ball.IsLaunched)
                 {
                     GlueBall(newBall);
@@ -221,7 +287,7 @@ namespace Game.Platform
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.TryGetComponent(out BonusBase bonus))
+            if (other.gameObject.TryGetComponent(out BonusBehaviour bonus))
             {
                 bonus.Use(this);
             }

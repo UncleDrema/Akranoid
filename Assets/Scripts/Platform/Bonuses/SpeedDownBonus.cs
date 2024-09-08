@@ -2,13 +2,13 @@
 
 namespace Game.Platform.Bonuses
 {
-    public class DuplicateBonus : IBonus
+    public class SpeedDownBonus : IBonus
     {
-        public Color BonusColor => Color.green;
-
+        public Color BonusColor => Color.black;
+        
         public void Activate(RacketBehaviour racket)
         {
-            racket.DuplicateBalls();
+            racket.SpeedDown();
         }
     }
 }

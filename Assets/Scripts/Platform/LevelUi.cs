@@ -19,7 +19,7 @@ namespace Game.Platform
 
         private void LateUpdate()
         {
-            healthText.text = $"{racket.Health} / {racket.MaxHealth}";
+            healthText.text = $"LIVES: {racket.Health}";
         }
 
         public void ReturnToMenu()

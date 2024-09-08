@@ -2,9 +2,11 @@
 
 namespace Game.Platform.Bonuses
 {
-    public class DebugBonus : BonusBase
+    public class DebugBonus : IBonus
     {
-        public override void Activate(RacketBehaviour racket)
+        public Color BonusColor => Color.magenta;
+
+        public void Activate(RacketBehaviour racket)
         {
             Debug.Log($"Bonus collected!");
         }

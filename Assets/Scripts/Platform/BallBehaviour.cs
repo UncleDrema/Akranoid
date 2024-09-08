@@ -11,12 +11,13 @@ namespace Game.Platform
 
         [SerializeField]
         private CircleCollider2D circleCollider;
-        
-        [SerializeField]
-        private Vector2 initialForce;
 
         [SerializeField]
         private Rigidbody2D rb;
+        
+        [Range(0.2f, 0.9f)]
+        [SerializeField]
+        float bounceFudge = 0.4f;
         
         public bool IsLaunched { get; private set; }
 
@@ -63,9 +64,6 @@ namespace Game.Platform
         {
             circleCollider.radius = ballRect.rect.width / 2;
         }
-        
-        [Range(7.0f,15.0f)] [SerializeField] float pushSpeed = 12.0f;
-        [Range(0.2f, 0.9f)] [SerializeField] float bounceFudge = 0.4f;
         
         private void OnCollisionEnter2D(Collision2D collision)
         {
@@ -139,8 +137,8 @@ namespace Game.Platform
         private void LaunchWithAngle(float ballAngle)
         {
             Vector2 ballVector;
-            ballVector.x = Mathf.Cos(ballAngle) * pushSpeed;
-            ballVector.y = Mathf.Sin(ballAngle) * pushSpeed;
+            ballVector.x = Mathf.Cos(ballAngle) * GameManager.Racket.BallSpeed;
+            ballVector.y = Mathf.Sin(ballAngle) * GameManager.Racket.BallSpeed;
             rb.velocity = ballVector;
         }
     }

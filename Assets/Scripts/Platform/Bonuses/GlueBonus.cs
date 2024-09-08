@@ -1,8 +1,12 @@
-﻿namespace Game.Platform.Bonuses
+﻿using UnityEngine;
+
+namespace Game.Platform.Bonuses
 {
-    public class GlueBonus : BonusBase
+    public class GlueBonus : IBonus
     {
-        public override void Activate(RacketBehaviour racket)
+        public Color BonusColor => Color.yellow;
+
+        public void Activate(RacketBehaviour racket)
         {
             racket.CoverWithGlue(5f);
         }

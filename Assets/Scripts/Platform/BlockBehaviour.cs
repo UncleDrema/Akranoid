@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Game.Platform.Bonuses;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Game.Platform
 {
@@ -9,8 +9,9 @@ namespace Game.Platform
         [SerializeField]
         private List<GameObject> healthStates;
 
-        [SerializeField]
-        private List<GameObject> bonusPrefabs;
+        [SerializeField, Range(0f, 1f)]
+        private float bonusChance;
+        
 
         private int maxHealth;
         private int health;
@@ -54,10 +55,9 @@ namespace Game.Platform
 
         private void Die()
         {
-            if (bonusPrefabs.Count > 0)
+            if (Random.value <= bonusChance)
             {
-                var prefab = bonusPrefabs[Random.Range(0, bonusPrefabs.Count)];
-                var bonus = CanvasManager.InstantiateObject(prefab, transform.position);
+                GameManager.SpawnBonus(transform.position);
             }
             Destroy(gameObject);
         }

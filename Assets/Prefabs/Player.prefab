@@ -187,11 +187,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f2bd92aa523488599e24effeb0bfe76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  racketTransform: {fileID: 3487431504837005334}
   playerCamera: {fileID: 0}
   ballHolder: {fileID: 8435877301915869891}
   ballPrefab: {fileID: 4613813925751681043, guid: d9b91c0e5d1d27248a61d104b5ba4eca, type: 3}
   racketArea: {fileID: 0}
   glueOverlay: {fileID: 6637398629251035123}
+  sizes: 960000002c010000c2010000
+  sizeIndex: 1
+  speeds: 06000000090000000c000000
+  speedIndex: 1
+  <Health>k__BackingField: 3
+  <BallSpeed>k__BackingField: 9
 --- !u!1 &5966076961943432732
 GameObject:
   m_ObjectHideFlags: 0
